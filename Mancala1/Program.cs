@@ -17,15 +17,15 @@ namespace Mancala1
 
         void DrawBoard()
         {
-            Console.WriteLine(@"       -----------------------------------------      ");
-            Console.WriteLine(@"     /   |      |      |      |      |      |    \    ");
+            Console.WriteLine(@"      ------------------------------------------      ");
+            Console.WriteLine(@"    /    |      |      |      |      |      |    \    ");
             Console.WriteLine(@"   /     |      |      |      |      |      |     \   ");
             Console.WriteLine(@"  |      |      |      |      |      |      |      |  ");
             Console.WriteLine(@"  |      ------------------------------------      |  ");
             Console.WriteLine(@"  |      |      |      |      |      |      |      |  ");
             Console.WriteLine(@"   \     |      |      |      |      |      |     /   ");
-            Console.WriteLine(@"     \   |      |      |      |      |      |   /     ");
-            Console.WriteLine(@"       ----------------------------------------       ");
+            Console.WriteLine(@"    \    |      |      |      |      |      |    /    ");
+            Console.WriteLine(@"      ------------------------------------------      ");
             //Console.SetCursorPosition(5, 10);
             //System.Threading.Thread.Sleep(100);
             //Console.ReadKey();
