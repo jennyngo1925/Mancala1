@@ -11,15 +11,21 @@ namespace Mancala1
         int[] SquareContent = new int[13] { 0, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0 };
         int[] SquareCoordX = new int[13] { 0, 12, 19, 26, 33, 40, 47, 40, 33, 26, 19, 12, 5 };
         int[] SquareCoordY = new int[13] { 0, 6, 6, 6, 6, 6, 4, 2, 2, 2, 2, 2, 4 };
+        int CurrentSquare;
+        int MarblesCapturedPlayer = 0;
+        int MarblesCapturedComputer = 0;
+        int MarblesOnHand; //Note: Marbles on hand before picking up or dropping down
+        int StartSquare;
+        int Player = 1; // 1=You, 2=Computer
 
         static void Main(string[] args)
         {
             var Program = new Program();
             Program.DrawBoard();
-            Program.WalkSquare();
+            Program.StartGame();
         }
 
-        void DrawBoard()
+        private void DrawBoard()
         {
             Console.WriteLine(@"      ------------------------------------------      ");
             Console.WriteLine(@"    /    |      |      |      |      |      |    \    ");
@@ -40,51 +46,259 @@ namespace Mancala1
             Console.WriteLine(@"                Marbles on Hand: 0                    ");
         }
 
-        void WalkSquare()
+        void StartGame()
         {
-            int currentSquare;
-            int marblesOnHand;
-            int coordX;
-            int coordY;
-            int startSquare;
-
-            Console.SetCursorPosition(0, 20);
-            Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?");
-            startSquare = Convert.ToInt32(Console.ReadLine());
-            if (startSquare > 5)
+            while (true)//player
             {
-                Console.WriteLine("PLEASE CHOOSE A NUMBER BETWEEN 1 AND 5!!!");
-                startSquare = Convert.ToInt32(Console.ReadLine());
-            }
-
-            currentSquare = startSquare;
-            marblesOnHand = 0;
-
-            while (true)
-            {
-                if (marblesOnHand == 0)
+                Player = 1;
+                StartSquare = ChooseStartSquare();
+                CurrentSquare = StartSquare;
+                MarblesOnHand = 0; //Note: Marbles on hand before picking up or dropping down
+                if (MarblesOnHand == 0) //Note: Marbles on hand before picking up or dropping down
                 {
-                    marblesOnHand = SquareContent[currentSquare];
-                    SquareContent[currentSquare] = 0;
+                    while (IsCaptureTime() == true && CurrentSquare != 10 && CurrentSquare != 4)
+                    {
+                        CurrentSquare = AdvanceToNextSquare();
+                        MarblesCapturedPlayer += SquareContent[CurrentSquare];
+                        Console.SetCursorPosition(18, 11);
+                        Console.Write(MarblesCapturedPlayer);
+                        SquareContent[CurrentSquare] = 0;
+                        DisplayMarbles();
+                        CurrentSquare = AdvanceToNextSquare();
+                    }
+
+                    MarblesOnHand = SquareContent[CurrentSquare]; //Note: Marbles on hand before picking up or dropping down
+                    SquareContent[CurrentSquare] = 0;
                 }
-                marblesOnHand = marblesOnHand - 1;
-                SquareContent[currentSquare] = SquareContent[currentSquare] + 1;
-                coordX = SquareCoordX[currentSquare];
-                coordY = SquareCoordY[currentSquare];
-                Console.SetCursorPosition(coordX, coordY);
-                Console.Write(SquareContent[currentSquare]);
-                Console.SetCursorPosition(32, 14);
-                Console.Write(startSquare);
-                Console.SetCursorPosition(32, 15);
-                Console.Write(currentSquare + " ");
-                Console.SetCursorPosition(33, 16);
-                Console.Write(marblesOnHand);
-                System.Threading.Thread.Sleep(1000);
-                if (currentSquare < 12)
-                    currentSquare = currentSquare + 1;
                 else
-                    currentSquare = 1;
+                {
+                    MarblesOnHand--; //Note: Marbles on hand before picking up or dropping down
+                    SquareContent[CurrentSquare] = SquareContent[CurrentSquare] + 1;
+                }
+
+                DisplayMarbles();
+                Console.Write(MarblesOnHand); //Note: Marbles on hand before picking up or dropping down
+                Console.Write(" ");
+                System.Threading.Thread.Sleep(1000);
+                CurrentSquare = AdvanceToNextSquare();
+
+                if (IsStopTime() == true)//computer
+                {
+                    Player = 2;
+                    Console.SetCursorPosition(0, 22);
+                    Console.Write("Computer's Turn. Press enter to continue.");
+                    Console.ReadKey();
+
+                    MarblesOnHand = 0; //Note: Marbles on hand before picking up or dropping down
+                    Random computer = new Random();
+                    int computerInt = computer.Next(7, 11);
+                    StartSquare = computerInt;
+                    SquareContent[computerInt] = SquareContent[StartSquare];
+
+                    while (SquareContent[StartSquare] == 0)
+                    {
+                        computerInt = computer.Next(7, 11);
+                        StartSquare = computerInt;
+                    }
+
+                    CurrentSquare = StartSquare;
+
+                    while (true)
+                    {
+                        if (MarblesOnHand == 0) //Note: Marbles on hand before picking up or dropping down
+                        {
+                            while (IsCaptureTime() == true && CurrentSquare != 10 && CurrentSquare != 4)
+                            {
+                                CurrentSquare = AdvanceToNextSquare();
+                                int nextSquareContent = SquareContent[CurrentSquare];
+                                int MarblesCaptured = nextSquareContent;
+                                Console.SetCursorPosition(40, 11);
+                                Console.Write(MarblesCapturedComputer);
+                                DisplayMarbles();
+                                SquareContent[CurrentSquare] = 0;
+
+                            }
+                        }
+
+                        if (IsStopTime() == true) //Note: Marbles on hand before picking up or dropping down
+                        {
+                            StartSquare = ChooseStartSquare();
+                            break;//breaks back to the computer
+                        }
+                        else
+                        {
+                            MarblesOnHand--; //Note: Marbles on hand before picking up or dropping down
+                            SquareContent[CurrentSquare] = SquareContent[CurrentSquare] + 1;
+                        }
+                        DisplayMarbles();
+                        Console.Write(MarblesOnHand); //Note: Marbles on hand before picking up or dropping down
+                        Console.Write(" ");
+                        System.Threading.Thread.Sleep(1000);
+
+                        CurrentSquare = AdvanceToNextSquare();
+                        MarblesOnHand = SquareContent[CurrentSquare]; //Note: Marbles on hand before picking up or dropping down
+                        SquareContent[CurrentSquare] = 0;
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// Moves and captures until loses the turn
+        /// </summary>
+        private void MoveUntilFinishTurn()
+        {
+            while (true)//Player
+            {
+                if (MarblesOnHand == 0) //Note: Marbles on hand before picking up or dropping down
+                {
+                    while (IsCaptureTime() == true && CurrentSquare != 10 && CurrentSquare != 4)
+                    {
+                        CurrentSquare = AdvanceToNextSquare();
+                        MarblesCapturedPlayer += SquareContent[CurrentSquare];
+                        Console.SetCursorPosition(18, 11);
+                        Console.Write(MarblesCapturedPlayer);
+                        SquareContent[CurrentSquare] = 0;
+                        DisplayMarbles();
+                        CurrentSquare = AdvanceToNextSquare();
+                    }
+
+                    if (IsStopTime() == true)
+                    {
+                        Player = 2;
+                        Console.SetCursorPosition(0, 22);
+                        Console.Write("Computer's Turn. Press enter to continue.");
+                        Console.ReadKey();
+
+                        MarblesOnHand = 0; //Note: Marbles on hand before picking up or dropping down
+                        Random computer = new Random();
+                        int computerInt = computer.Next(7, 11);
+                        StartSquare = computerInt;
+                        SquareContent[computerInt] = SquareContent[StartSquare];
+
+                        while (SquareContent[StartSquare] == 0)
+                        {
+                            computerInt = computer.Next(7, 11);
+                            StartSquare = computerInt;
+                        }
+                    }
+
+                    MarblesOnHand = SquareContent[CurrentSquare]; //Note: Marbles on hand before picking up or dropping down
+                    SquareContent[CurrentSquare] = 0;
+                }
+                else
+                {
+                    MarblesOnHand--; //Note: Marbles on hand before picking up or dropping down
+                    SquareContent[CurrentSquare] = SquareContent[CurrentSquare] + 1;
+                }
+
+                DisplayMarbles();
+                Console.Write(MarblesOnHand); //Note: Marbles on hand before picking up or dropping down
+                Console.Write(" ");
+                System.Threading.Thread.Sleep(1000);
+                CurrentSquare = AdvanceToNextSquare();
+            }
+        }
+
+
+        private void DisplayStatus()
+        {
+            if (Player == 1)
+            {
+                Console.SetCursorPosition(32, 13);
+                Console.Write("You           ");
+            }
+            if (Player == 2)
+            {
+                Console.SetCursorPosition(32, 13);
+                Console.Write("Computer");
+            }
+            Console.SetCursorPosition(32, 14);
+            Console.Write(StartSquare);
+            Console.SetCursorPosition(32, 15);
+            Console.Write(CurrentSquare + " ");
+            Console.SetCursorPosition(33, 16);
+        }
+
+
+        private void DisplayMarbles()
+        {
+            int coordX = SquareCoordX[CurrentSquare];
+            int coordY = SquareCoordY[CurrentSquare];
+            Console.SetCursorPosition(coordX, coordY);
+            Console.Write(SquareContent[CurrentSquare]);
+            Console.Write(" ");
+            DisplayStatus();
+        }
+
+
+        private bool IsStopTime()
+        {
+            int currentSquareContent = SquareContent[CurrentSquare];
+
+            int nextSquare = AdvanceToNextSquare();
+            int nextSquareContent = SquareContent[nextSquare];
+
+            if (currentSquareContent == 0 && nextSquareContent == 0)
+                return true;
+            else
+                return false;
+        }
+
+
+        private bool IsCaptureTime()
+        {
+            int currentSquareContent = SquareContent[CurrentSquare];
+
+            int nextSquare = AdvanceToNextSquare();
+            int nextSquareContent = SquareContent[nextSquare];
+
+            if (currentSquareContent == 0 && nextSquareContent > 0)
+                return true;
+            else
+                return false;
+        }
+
+
+        private int AdvanceToNextSquare()
+        {
+            int nextSquare;
+
+            if (CurrentSquare < 12)
+                nextSquare = CurrentSquare + 1;
+            else
+                nextSquare = 1;
+
+            return nextSquare;
+        }
+
+        /// <summary>
+        /// Chooses the start square for each player
+        /// </summary>
+        /// <returns></returns>
+        private int ChooseStartSquare()
+        {
+            int sq = 0;
+
+            if (Player == 1) // You
+            {
+                while (sq >= 1 && sq <= 5)
+                {
+                    Console.SetCursorPosition(0, 20);
+                    Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?");
+                    sq = Convert.ToInt32(Console.ReadLine());
+                }
+            }
+            else if (Player == 2) // Computer
+            {
+                Console.SetCursorPosition(0, 22);
+                Console.Write("Computer's Turn. Press enter to continue.");
+                Console.ReadKey();
+                Random computer = new Random();
+                sq = computer.Next(7, 11);
+            }
+
+            return sq;
         }
     }
 }
