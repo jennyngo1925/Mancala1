@@ -48,7 +48,7 @@ namespace Mancala1
 
         public void StartGame()
         {
-            while (true)//player
+            while (true)
             {
                 Player = 1;
                 StartSquare = ChooseStartSquare();
