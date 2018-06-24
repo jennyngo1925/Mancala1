@@ -8,16 +8,6 @@ namespace Mancala1
 {
     public partial class Mancala
     {
-        int[] SquareContent = new int[13] { 0, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0 };
-        int[] SquareCoordX = new int[13] { 0, 12, 19, 26, 33, 40, 47, 40, 33, 26, 19, 12, 5 };
-        int[] SquareCoordY = new int[13] { 0, 6, 6, 6, 6, 6, 4, 2, 2, 2, 2, 2, 4 };
-        int CurrentSquare;
-        int MarblesCapturedPlayer = 0;
-        int MarblesCapturedComputer = 0;
-        int MarblesOnHand; //Note: Marbles on hand before picking up or dropping down
-        int StartSquare;
-        int Player = 1; // 1=You, 2=Computer
-
         static void Main(string[] args)
         {
             var Mancala = new Mancala();
