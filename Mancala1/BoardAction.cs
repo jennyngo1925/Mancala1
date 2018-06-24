@@ -58,5 +58,82 @@ namespace Mancala1
             Console.Write(" ");
             DisplayStatus();
         }
+
+
+        public bool IsCaptureTime()
+        {
+            int currentSquareContent = SquareContent[CurrentSquare];
+
+            int nextSquare = AdvanceToNextSquare();
+            int nextSquareContent = SquareContent[nextSquare];
+
+            if (currentSquareContent == 0 && nextSquareContent > 0)
+                return true;
+            else
+                return false;
+        }
+
+
+        public bool IsStopTime()
+        {
+            int currentSquareContent = SquareContent[CurrentSquare];
+
+            int nextSquare = AdvanceToNextSquare();
+            int nextSquareContent = SquareContent[nextSquare];
+
+            if (currentSquareContent == 0 && nextSquareContent == 0)
+                return true;
+            else
+                return false;
+        }
+
+
+        public bool IsEndTime()
+        {
+            return false;
+            // TODO: End the game if all squares are empty or players connot move annymore
+        }
+
+
+        public int AdvanceToNextSquare()
+        {
+            int nextSquare;
+
+            if (CurrentSquare < 12)
+                nextSquare = CurrentSquare + 1;
+            else
+                nextSquare = 1;
+
+            return nextSquare;
+        }
+
+        /// <summary>
+        /// Chooses the start square for each player
+        /// </summary>
+        /// <returns></returns>
+        public int ChooseStartSquare()
+        {
+            int sq = 0;
+
+            if (Player == 1) // You
+            {
+                while (sq >= 1 && sq <= 5)
+                {
+                    Console.SetCursorPosition(0, 20);
+                    Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?");
+                    sq = Convert.ToInt32(Console.ReadLine());
+                }
+            }
+            else if (Player == 2) // Computer
+            {
+                Console.SetCursorPosition(0, 22);
+                Console.Write("Computer's Turn. Press enter to continue.");
+                Console.ReadKey();
+                Random computer = new Random();
+                sq = computer.Next(7, 11);
+            }
+
+            return sq;
+        }
     }
 }
