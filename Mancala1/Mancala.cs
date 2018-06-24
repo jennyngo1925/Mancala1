@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mancala1
 {
-    public class Program
+    public class Mancala
     {
         int[] SquareContent = new int[13] { 0, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0 };
         int[] SquareCoordX = new int[13] { 0, 12, 19, 26, 33, 40, 47, 40, 33, 26, 19, 12, 5 };
@@ -20,9 +20,9 @@ namespace Mancala1
 
         static void Main(string[] args)
         {
-            var Program = new Program();
-            Program.DrawBoard();
-            Program.StartGame();
+            var Mancala = new Mancala();
+            Mancala.DrawBoard();
+            Mancala.StartGame();
         }
 
         public void DrawBoard()
