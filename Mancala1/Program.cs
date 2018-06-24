@@ -260,7 +260,7 @@ namespace Mancala1
         }
 
 
-        private int AdvanceToNextSquare()
+        public int AdvanceToNextSquare()
         {
             int nextSquare;
 
