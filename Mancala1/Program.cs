@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mancala1
 {
-    class Program
+    public class Program
     {
         int[] SquareContent = new int[13] { 0, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0 };
         int[] SquareCoordX = new int[13] { 0, 12, 19, 26, 33, 40, 47, 40, 33, 26, 19, 12, 5 };
@@ -25,7 +25,7 @@ namespace Mancala1
             Program.StartGame();
         }
 
-        private void DrawBoard()
+        public void DrawBoard()
         {
             Console.WriteLine(@"      ------------------------------------------      ");
             Console.WriteLine(@"    /    |      |      |      |      |      |    \    ");
@@ -46,7 +46,7 @@ namespace Mancala1
             Console.WriteLine(@"                Marbles on Hand: 0                    ");
         }
 
-        void StartGame()
+        public void StartGame()
         {
             while (true)//player
             {
@@ -146,7 +146,7 @@ namespace Mancala1
         /// <summary>
         /// Moves and captures until loses the turn
         /// </summary>
-        private void MoveUntilFinishTurn()
+        public void MoveUntilFinishTurn()
         {
             while (true)//Player
             {
@@ -201,7 +201,7 @@ namespace Mancala1
         }
 
 
-        private void DisplayStatus()
+        public void DisplayStatus()
         {
             if (Player == 1)
             {
@@ -221,7 +221,7 @@ namespace Mancala1
         }
 
 
-        private void DisplayMarbles()
+        public void DisplayMarbles()
         {
             int coordX = SquareCoordX[CurrentSquare];
             int coordY = SquareCoordY[CurrentSquare];
@@ -232,7 +232,7 @@ namespace Mancala1
         }
 
 
-        private bool IsStopTime()
+        public bool IsStopTime()
         {
             int currentSquareContent = SquareContent[CurrentSquare];
 
@@ -246,7 +246,7 @@ namespace Mancala1
         }
 
 
-        private bool IsCaptureTime()
+        public bool IsCaptureTime()
         {
             int currentSquareContent = SquareContent[CurrentSquare];
 
@@ -276,7 +276,7 @@ namespace Mancala1
         /// Chooses the start square for each player
         /// </summary>
         /// <returns></returns>
-        private int ChooseStartSquare()
+        public int ChooseStartSquare()
         {
             int sq = 0;
 
