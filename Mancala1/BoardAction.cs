@@ -127,7 +127,7 @@ namespace Mancala1
 
             if (Player == 1) // You
             {
-                while (sq >= 1 && sq <= 5)
+                while (sq < 1 || sq > 5)
                 {
                     Console.SetCursorPosition(0, 20);
                     Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?");
