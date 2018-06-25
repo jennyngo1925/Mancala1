@@ -56,6 +56,7 @@ namespace Mancala1
             Console.SetCursorPosition(32, 15);
             Console.Write(CurrentSquare + " ");
             Console.SetCursorPosition(33, 16);
+            Console.Write(MarblesOnHand + " "); //Note: Marbles on hand before picking up or dropping down
         }
 
 
@@ -79,12 +80,14 @@ namespace Mancala1
 
             if (currentSquareContent == 0 && nextSquareContent > 0)
                 return true;
+            if (CurrentSquare == 10 || CurrentSquare == 4)
+                return true;
             else
                 return false;
         }
 
 
-        public bool IsStopTime()
+        public bool IsTurnEnd()
         {
             int currentSquareContent = SquareContent[CurrentSquare];
 
@@ -98,7 +101,7 @@ namespace Mancala1
         }
 
 
-        public bool IsEndTime()
+        public bool IsGameEnd()
         {
             return false;
             // TODO: End the game if all squares are empty or players connot move annymore

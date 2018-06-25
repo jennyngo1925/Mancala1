@@ -25,9 +25,9 @@ namespace Mancala1
                 CurrentSquare = StartSquare;
                 MarblesOnHand = 0; //Note: Marbles on hand before picking up or dropping down
                 MoveUntilFinishTurn();
-                if (IsEndTime() == true)
+                if (IsGameEnd() == true)
                 {
-                    break;
+                    continue;
                 }
 
                 //Computer's turn
@@ -36,13 +36,22 @@ namespace Mancala1
                 CurrentSquare = StartSquare;
                 MarblesOnHand = 0; //Note: Marbles on hand before picking up or dropping down
                 MoveUntilFinishTurn();
-                if (IsEndTime() == true)
+                if (IsGameEnd() == true)
                 {
-                    break;
+                    continue;
                 }
+
+                //End of game
+                if (IsGameEnd() == true)
+                {
+                    if (MarblesCapturedComputer > MarblesCapturedPlayer)
+                        Console.Write("Congratulations! You win!!!! :)");
+                    if (MarblesCapturedPlayer > MarblesCapturedComputer)
+                        Console.Write("Haha you lose :P");
+                }
+                
             }
 
-            // TODO: determine the winner
         }
 
         /// <summary>
@@ -54,35 +63,27 @@ namespace Mancala1
             {
                 if (MarblesOnHand == 0) //Note: Marbles on hand before picking up or dropping down
                 {
-                    while (IsCaptureTime() == true && CurrentSquare != 10 && CurrentSquare != 4)
+                    while (IsCaptureTime() == true)
                     {
                         CurrentSquare = AdvanceToNextSquare();
                         MarblesCapturedPlayer += SquareContent[CurrentSquare];
-                        Console.SetCursorPosition(18, 11);
-                        Console.Write(MarblesCapturedPlayer);
                         SquareContent[CurrentSquare] = 0;
                         DisplayMarbles();
                         CurrentSquare = AdvanceToNextSquare();
+
+                        if (SquareContent[CurrentSquare] > 0)//how in the world do you make this stop
+                        {
+                            break;
+                        }
                     }
 
-                    if (IsStopTime() == true)
+                    if (IsTurnEnd() == true)
                     {
-                        Player = 2;
-                        Console.SetCursorPosition(0, 22);
-                        Console.Write("Computer's Turn. Press enter to continue.");
-                        Console.ReadKey();
+                        break;
+                    }
+                    else
+                    {
 
-                        MarblesOnHand = 0; //Note: Marbles on hand before picking up or dropping down
-                        Random computer = new Random();
-                        int computerInt = computer.Next(7, 11);
-                        StartSquare = computerInt;
-                        SquareContent[computerInt] = SquareContent[StartSquare];
-
-                        while (SquareContent[StartSquare] == 0)
-                        {
-                            computerInt = computer.Next(7, 11);
-                            StartSquare = computerInt;
-                        }
                     }
 
                     MarblesOnHand = SquareContent[CurrentSquare]; //Note: Marbles on hand before picking up or dropping down
@@ -95,8 +96,6 @@ namespace Mancala1
                 }
 
                 DisplayMarbles();
-                Console.Write(MarblesOnHand); //Note: Marbles on hand before picking up or dropping down
-                Console.Write(" ");
                 System.Threading.Thread.Sleep(1000);
                 CurrentSquare = AdvanceToNextSquare();
             }
