@@ -56,6 +56,10 @@ namespace Mancala1
                 Console.SetCursorPosition(33, 13);
                 Console.Write("Computer");
             }
+            Console.SetCursorPosition(18, 11);
+            Console.Write(MarblesCapturedPlayer + " ");
+            Console.SetCursorPosition(48, 11);
+            Console.Write(MarblesCapturedComputer + " ");
             Console.SetCursorPosition(33, 14); 
             Console.Write(StartSquare + " ");
             Console.SetCursorPosition(33, 15);
@@ -98,9 +102,7 @@ namespace Mancala1
             int nextSquare = AdvanceToNextSquare();
             int nextSquareContent = SquareContent[nextSquare];
 
-            if (currentSquareContent == 0 && nextSquareContent > 0)
-                return true;
-            if (CurrentSquare == 10 || CurrentSquare == 4)
+            if (MarblesOnHand == 0 && currentSquareContent == 0 && nextSquareContent > 0)
                 return true;
             else
                 return false;
@@ -114,7 +116,7 @@ namespace Mancala1
             int nextSquare = AdvanceToNextSquare();
             int nextSquareContent = SquareContent[nextSquare];
 
-            if (currentSquareContent == 0 && nextSquareContent == 0)
+            if (MarblesOnHand == 0 && currentSquareContent == 0 && nextSquareContent == 0)
                 return true;
             else
                 return false;
@@ -153,14 +155,14 @@ namespace Mancala1
                 while (sq < 1 || sq > 5)
                 {
                     Console.SetCursorPosition(0, 22);
-                    Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?");
+                    Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?       ");
                     sq = Convert.ToInt32(Console.ReadLine());
                 }
             }
             else if (Player == 2) // Computer
             {
                 Console.SetCursorPosition(0, 22);
-                Console.Write("Computer's Turn. Press enter to continue.");
+                Console.Write("Computer's Turn. Press enter to continue.        ");
                 Console.ReadKey();
                 Random computer = new Random();
                 sq = computer.Next(7, 11);

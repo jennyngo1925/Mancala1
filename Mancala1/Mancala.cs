@@ -27,7 +27,7 @@ namespace Mancala1
                 MoveUntilFinishTurn();
                 if (IsGameEnd() == true)
                 {
-                    continue;
+                    break;
                 }
 
                 //Computer's turn
@@ -38,18 +38,18 @@ namespace Mancala1
                 MoveUntilFinishTurn();
                 if (IsGameEnd() == true)
                 {
-                    continue;
+                    break;
                 }
 
-                //End of game
-                if (IsGameEnd() == true)
-                {
-                    if (MarblesCapturedComputer > MarblesCapturedPlayer)
-                        Console.Write("Congratulations! You win!!!! :)");
-                    if (MarblesCapturedPlayer > MarblesCapturedComputer)
-                        Console.Write("Haha you lose :P");
-                }
-                
+            }
+
+            //End of game
+            if (IsGameEnd() == true)
+            {
+                if (MarblesCapturedComputer > MarblesCapturedPlayer)
+                    Console.Write("Congratulations! You win!!!! :)");
+                if (MarblesCapturedPlayer > MarblesCapturedComputer)
+                    Console.Write("Haha you lose :P");
             }
 
         }
@@ -59,40 +59,49 @@ namespace Mancala1
         /// </summary>
         public void MoveUntilFinishTurn()
         {
-            while (true)//Player
+            while (true)
             {
-                if (MarblesOnHand == 0) //Note: Marbles on hand before picking up or dropping down
+                if (MarblesOnHand > 0) //Note: Marbles on hand before picking up or dropping down
                 {
-                    while (IsCaptureTime() == true)
-                    {
-                        CurrentSquare = AdvanceToNextSquare();
-                        MarblesCapturedPlayer += SquareContent[CurrentSquare];
-                        SquareContent[CurrentSquare] = 0;
-                        DisplayMarbles();
-                        CurrentSquare = AdvanceToNextSquare();
-
-                        if (SquareContent[CurrentSquare] > 0)//how in the world do you make this stop
-                        {
-                            break;
-                        }
-                    }
-
+                    MarblesOnHand--; //Note: Marbles on hand before picking up or dropping down
+                    SquareContent[CurrentSquare] = SquareContent[CurrentSquare] + 1;
+                }
+                else
+                {
                     if (IsTurnEnd() == true)
                     {
                         break;
                     }
+
+                    if (IsCaptureTime() == false)
+                    {
+                        MarblesOnHand = SquareContent[CurrentSquare]; //Note: Marbles on hand before picking up or dropping down
+                        SquareContent[CurrentSquare] = 0;
+                    }
                     else
                     {
+                        while (SquareContent[CurrentSquare] == 0)
+                        {
+                            CurrentSquare = AdvanceToNextSquare();
 
+                            if (Player == 1)
+                            {
+                                MarblesCapturedPlayer += SquareContent[CurrentSquare];
+                            }
+
+                            if (Player == 2)
+                            {
+                                MarblesCapturedComputer += SquareContent[CurrentSquare];
+                            }
+                            SquareContent[CurrentSquare] = 0;
+                            DisplayMarbles();
+                            DisplayStatus();
+                            CurrentSquare = AdvanceToNextSquare();
+                        }
+
+                        //if (SquareContent[CurrentSquare] > 0)
+                        break;
                     }
-
-                    MarblesOnHand = SquareContent[CurrentSquare]; //Note: Marbles on hand before picking up or dropping down
-                    SquareContent[CurrentSquare] = 0;
-                }
-                else
-                {
-                    MarblesOnHand--; //Note: Marbles on hand before picking up or dropping down
-                    SquareContent[CurrentSquare] = SquareContent[CurrentSquare] + 1;
                 }
 
                 DisplayMarbles();
