@@ -63,7 +63,7 @@ namespace Mancala1
             Console.SetCursorPosition(33, 14); 
             Console.Write(StartSquare + " ");
             Console.SetCursorPosition(33, 15);
-            Console.Write(CurrentSquare + "  ");
+            Console.Write(CurrentSquare + " ");
             Console.SetCursorPosition(33, 16);
             Console.Write(MarblesOnHand + " "); //Note: Marbles on hand before picking up or dropping down 
             Console.SetCursorPosition(33, 17);
