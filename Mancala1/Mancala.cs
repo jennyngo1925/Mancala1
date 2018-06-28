@@ -97,6 +97,7 @@ namespace Mancala1
                             DisplayMarbles();
                             DisplayStatus();
                             CurrentSquare = AdvanceToNextSquare();
+                            Console.ReadKey();
                         }
 
                         //if (SquareContent[CurrentSquare] > 0)
