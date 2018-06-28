@@ -97,12 +97,12 @@ namespace Mancala1
 
         public bool IsCaptureTime()
         {
-            int currentSquareContent = SquareContent[CurrentSquare];
+            int currentSquareContent = SquareContent[CurrentSquare];//CS=11
 
-            int nextSquare = AdvanceToNextSquare();
+            int nextSquare = AdvanceToNextSquare();//CS=12
             int nextSquareContent = SquareContent[nextSquare];
 
-            if (MarblesOnHand == 0 && currentSquareContent == 0 && nextSquareContent > 0)
+            if (MarblesOnHand == 0 && currentSquareContent == 0)
                 return true;
             else
                 return false;
@@ -118,8 +118,12 @@ namespace Mancala1
 
             if (MarblesOnHand == 0 && currentSquareContent == 0 && nextSquareContent == 0)
                 return true;
-            else
-                return false;
+            if (MarblesOnHand == 0 && CurrentSquare == 12)
+                return true;
+            if (MarblesOnHand == 0 && CurrentSquare == 6)
+                return true;
+
+             return false;
         }
 
 

@@ -105,7 +105,7 @@ namespace Mancala1
                 }
 
                 DisplayMarbles();
-                System.Threading.Thread.Sleep(1000);
+                Console.ReadKey();
                 CurrentSquare = AdvanceToNextSquare();
             }
         }
