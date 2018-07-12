@@ -103,6 +103,17 @@ namespace Mancala1
                         //if (SquareContent[CurrentSquare] > 0)
                         break;
                     }
+
+                    if (SquareContent[1] + SquareContent[2] + SquareContent[3] + SquareContent[4] + SquareContent[5] == 0)
+                    {
+                        MarblesCapturedComputer = MarblesCapturedComputer + SquareContent[7] + SquareContent[8] + SquareContent[9] + SquareContent[10] + SquareContent[11];
+                        break;
+                    }
+                    if (SquareContent[7] + SquareContent[8] + SquareContent[9] + SquareContent[10] + SquareContent[11] == 0)
+                    {
+                        MarblesCapturedPlayer = MarblesCapturedPlayer + SquareContent[1] + SquareContent[2] + SquareContent[3] + SquareContent[4] + SquareContent[5];
+                        break;
+                    }
                 }
 
                 DisplayMarbles();
