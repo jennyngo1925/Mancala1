@@ -8,7 +8,7 @@ namespace Mancala1
 {
     public partial class Mancala
     {
-        int[] SquareContent = new int[13] { 0, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0 };
+        int[] SquareContent = new int[13] { 0, 5, 0, 5, 5, 5, 0, 5, 5, 5, 5, 5, 0 };
         int[] SquareCoordX = new int[13] { 0, 12, 19, 26, 33, 40, 47, 40, 33, 26, 19, 12, 5 };
         int[] SquareCoordY = new int[13] { 0, 6, 6, 6, 6, 6, 4, 2, 2, 2, 2, 2, 4 };
         int CurrentSquare;
@@ -22,11 +22,11 @@ namespace Mancala1
         {
             Console.WriteLine(@"      ------------------------------------------      ");
             Console.WriteLine(@"    /    |      |      |      |      |      |    \    ");
-            Console.WriteLine(@"   /     |  5   |  5   |  5   |  5   |  5   |     \   ");
+            Console.WriteLine(@"   /     |  11  |  10  |  9   |  8   |  7   |     \   ");
             Console.WriteLine(@"  |      |      |      |      |      |      |      |  ");
-            Console.WriteLine(@"  |  0   ------------------------------------  0   |  ");
+            Console.WriteLine(@"  |  12  ------------------------------------  6   |  ");
             Console.WriteLine(@"  |      |      |      |      |      |      |      |  ");
-            Console.WriteLine(@"   \     |  5   |  5   |  5   |  5   |  5   |     /   ");
+            Console.WriteLine(@"   \     |  1   |  2   |  3   |  4   |  5   |     /   ");
             Console.WriteLine(@"    \    |      |      |      |      |      |    /    ");
             Console.WriteLine(@"      ------------------------------------------      ");
             Console.WriteLine(@"                                                      ");
@@ -34,7 +34,7 @@ namespace Mancala1
             Console.WriteLine(@"Marbles Captured: 0           Marbles Captured: 0     ");
             Console.WriteLine(@"                                                      ");
             Console.WriteLine(@"                Current Player:  You                  ");
-            Console.WriteLine(@"                Started Square:  0                   ");
+            Console.WriteLine(@"                Started Square:  0                    ");
             Console.WriteLine(@"                Current Square:  0                    ");
             Console.WriteLine(@"                Marbles on Hand: 0                    ");
             Console.WriteLine(@"                Captured yet?:   No                   ");
@@ -42,6 +42,14 @@ namespace Mancala1
             Console.WriteLine(@"                Game over yet?:  No                   ");
             Console.WriteLine(@"                                                      ");
 
+            // Display initial marbles
+            for (int square = 1; square <= 12; square++)
+            {
+                int coordX = SquareCoordX[square];
+                int coordY = SquareCoordY[square];
+                Console.SetCursorPosition(coordX, coordY);
+                Console.Write(SquareContent[square] + " ");
+            }
         }
 
         public void DisplayStatus()
@@ -89,8 +97,7 @@ namespace Mancala1
             int coordX = SquareCoordX[CurrentSquare];
             int coordY = SquareCoordY[CurrentSquare];
             Console.SetCursorPosition(coordX, coordY);
-            Console.Write(SquareContent[CurrentSquare]);
-            Console.Write(" ");
+            Console.Write(SquareContent[CurrentSquare] + " ");
             DisplayStatus();
         }
 
@@ -122,6 +129,8 @@ namespace Mancala1
                 return true;
             if (MarblesOnHand == 0 && CurrentSquare == 6)
                 return true;
+            if (MarblesOnHand == 0 && CurrentSquare >= 1 && CurrentSquare <= 5 && currentSquareContent == 0)
+                return true;
 
              return false;
         }
@@ -129,7 +138,15 @@ namespace Mancala1
 
         public bool IsGameEnd()
         {
-            return false;
+            int currentSquareContent = SquareContent[CurrentSquare];
+
+            int nextSquare = AdvanceToNextSquare();
+            int nextSquareContent = SquareContent[nextSquare];
+
+            if (MarblesOnHand == 0 && currentSquareContent == 0 && nextSquareContent == 0)
+                return true;
+            else
+                return false;
             // TODO: End the game if all squares are empty or players connot move annymore
         }
 
@@ -156,12 +173,22 @@ namespace Mancala1
 
             if (Player == 1) // You
             {
-                while (sq < 1 || sq > 5)
+                while (true)
                 {
                     Console.SetCursorPosition(0, 22);
                     Console.WriteLine("Which box do you choose (1, 2, 3, 4, 5)?       ");
                     sq = Convert.ToInt32(Console.ReadLine());
+
+                    if (sq >= 1 && sq <= 5 && SquareContent[sq] > 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Pick another square.");
+                    }
                 }
+
             }
             else if (Player == 2) // Computer
             {
@@ -171,8 +198,8 @@ namespace Mancala1
                 Random computer = new Random();
                 sq = computer.Next(7, 11);
             }
-
             return sq;
+
         }
     }
 }
